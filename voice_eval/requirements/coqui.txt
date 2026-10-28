@@ -1,0 +1,12 @@
+# Maintained fork — do NOT use obsolete PyPI package named only "TTS"
+coqui-tts[codec]>=0.24.0
+numpy>=1.26.0
+scipy>=1.11.0
+soundfile>=0.12.1
+psutil>=5.9.0
+pyyaml>=6.0.1
+# CPU torch; Windows uses default CPU wheels
+torch>=2.1.0
+torchaudio>=2.1.0
+torchcodec>=0.8.0
+

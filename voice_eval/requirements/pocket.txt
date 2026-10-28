@@ -1,0 +1,7 @@
+# Pocket TTS — Kyutai (CPU wheels on Windows by default)
+pocket-tts>=0.4.0
+numpy>=1.26.0
+scipy>=1.11.0
+soundfile>=0.12.1
+psutil>=5.9.0
+pyyaml>=6.0.1

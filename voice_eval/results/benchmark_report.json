@@ -1,0 +1,214 @@
+{
+  "machine": {
+    "os": "Windows 11",
+    "cpu": "Intel i7-8650U",
+    "ram_gb": 16,
+    "python": "3.12",
+    "prefer_cpu": true
+  },
+  "reference": {
+    "path": "D:\\AI-Personal Assistant\\ra-one-hologram\\voice_eval\\reference\\my_voice.wav",
+    "exists": false,
+    "ok": false,
+    "errors": [
+      "Reference file not found. Place your owned recording at this path."
+    ],
+    "warnings": [],
+    "duration_sec": 0.0,
+    "sample_rate": 0,
+    "channels": 0,
+    "subtype": "",
+    "peak": 0.0,
+    "rms": 0.0,
+    "clipped": false,
+    "silent_ratio": 0.0,
+    "format_ok": false
+  },
+  "results": [
+    {
+      "success": true,
+      "engine": "kokoro_onnx",
+      "mode": "installed_voice",
+      "cloning_used": false,
+      "voice": "am_adam",
+      "available_voices": [
+        "af_alloy",
+        "af_aoede",
+        "af_bella",
+        "af_heart",
+        "af_jessica",
+        "af_kore",
+        "af_nicole",
+        "af_nova",
+        "af_river",
+        "af_sarah",
+        "af_sky",
+        "am_adam",
+        "am_echo",
+        "am_eric",
+        "am_fenrir",
+        "am_liam",
+        "am_michael",
+        "am_onyx",
+        "am_puck",
+        "am_santa"
+      ],
+      "load_sec": 2.0597990000387654,
+      "synthesize_sec": 5.976119999948423,
+      "peak_rss_mb": 348.6015625,
+      "delta_rss_mb": 286.6875,
+      "sample_rate": 24000,
+      "output_path": "D:\\AI-Personal Assistant\\ra-one-hologram\\voice_eval\\results\\kokoro_20261022_182722_commander.wav",
+      "spoken_text": "I am Raw-One. An intelligence born from the universe. My systems are online. How may I assist you?",
+      "offline_after_cache": true,
+      "notes": [
+        "no_wav_cloning_installed_voices_only"
+      ],
+      "duration_sec": 5.802666666666667,
+      "peak": 0.9108904600143433,
+      "rms": 0.11834334582090378,
+      "wall_sec": 9.307902999978978,
+      "display_name": "RA-ONE",
+      "display_text": "I am Raw-One. An intelligence born from the universe. My systems are online. How may I assist you?",
+      "reference": null,
+      "stderr_tail": "",
+      "preset": "commander",
+      "presets_available": [
+        "none",
+        "dark",
+        "cosmic",
+        "commander"
+      ],
+      "job": "kokoro:builtin",
+      "job_wall_sec": 9.343607000017073
+    },
+    {
+      "success": true,
+      "engine": "pocket_tts",
+      "mode": "builtin",
+      "cloning_used": false,
+      "load_sec": 7.086084000009578,
+      "synthesize_sec": 2.480083900038153,
+      "peak_rss_mb": 489.16015625,
+      "delta_rss_mb": 152.921875,
+      "sample_rate": 24000,
+      "output_path": "D:\\AI-Personal Assistant\\ra-one-hologram\\voice_eval\\results\\pocket_20261022_182731_commander.wav",
+      "spoken_text": "I am Raw-One. An intelligence born from the universe. My systems are online. How may I assist you?",
+      "offline_after_cache": true,
+      "notes": [
+        "builtin_voice=alba extract_sec=2.00"
+      ],
+      "duration_sec": 6.08,
+      "peak": 0.6906356811523438,
+      "rms": 0.11644520610570908,
+      "wall_sec": 20.541023099969607,
+      "display_name": "RA-ONE",
+      "display_text": "I am Raw-One. An intelligence born from the universe. My systems are online. How may I assist you?",
+      "reference": null,
+      "stderr_tail": "Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n",
+      "preset": "commander",
+      "presets_available": [
+        "none",
+        "dark",
+        "cosmic",
+        "commander"
+      ],
+      "job": "pocket:builtin",
+      "job_wall_sec": 20.580872100021224
+    },
+    {
+      "success": false,
+      "engine": "pocket_clone",
+      "error": "reference_not_ok",
+      "reference": {
+        "path": "D:\\AI-Personal Assistant\\ra-one-hologram\\voice_eval\\reference\\my_voice.wav",
+        "exists": false,
+        "ok": false,
+        "errors": [
+          "Reference file not found. Place your owned recording at this path."
+        ],
+        "warnings": [],
+        "duration_sec": 0.0,
+        "sample_rate": 0,
+        "channels": 0,
+        "subtype": "",
+        "peak": 0.0,
+        "rms": 0.0,
+        "clipped": false,
+        "silent_ratio": 0.0,
+        "format_ok": false
+      }
+    },
+    {
+      "success": false,
+      "engine": "coqui_clone",
+      "error": "reference_not_ok",
+      "reference": {
+        "path": "D:\\AI-Personal Assistant\\ra-one-hologram\\voice_eval\\reference\\my_voice.wav",
+        "exists": false,
+        "ok": false,
+        "errors": [
+          "Reference file not found. Place your owned recording at this path."
+        ],
+        "warnings": [],
+        "duration_sec": 0.0,
+        "sample_rate": 0,
+        "channels": 0,
+        "subtype": "",
+        "peak": 0.0,
+        "rms": 0.0,
+        "clipped": false,
+        "silent_ratio": 0.0,
+        "format_ok": false
+      }
+    }
+  ],
+  "recommendation": {
+    "winner": "pocket_tts",
+    "winner_output": "D:\\AI-Personal Assistant\\ra-one-hologram\\voice_eval\\results\\pocket_20261022_182731_commander.wav",
+    "scores": {
+      "kokoro_onnx": {
+        "cpu_speed": 9.25,
+        "ram": 9.13,
+        "offline": 10,
+        "install": 8,
+        "cloning": 4,
+        "overall_auto": 8.72,
+        "note": "Voice similarity/naturalness/rugged quality require human listening."
+      },
+      "pocket_tts": {
+        "cpu_speed": 9.69,
+        "ram": 8.78,
+        "offline": 10,
+        "install": 8,
+        "cloning": 5,
+        "overall_auto": 8.89,
+        "note": "Voice similarity/naturalness/rugged quality require human listening."
+      },
+      "pocket_clone": {
+        "cpu_speed": 0,
+        "ram": 0,
+        "offline": 0,
+        "install": 0,
+        "cloning": 0,
+        "overall_auto": 0
+      },
+      "coqui_clone": {
+        "cpu_speed": 0,
+        "ram": 0,
+        "offline": 0,
+        "install": 0,
+        "cloning": 0,
+        "overall_auto": 0
+      }
+    },
+    "reason": "Best automatic score: pocket_tts (synth 2.5s, peak RSS ~489 MB). No cloning run succeeded (missing/invalid reference WAV). Kokoro baseline uses installed voices only. Do NOT replace production Piper until you A/B listen and confirm rugged cinematic quality.",
+    "replace_production_piper": false
+  },
+  "listening_checklist": [
+    "Similarity to reference (if cloning)",
+    "Rugged / cinematic character with Dark/Cosmic/Commander presets",
+    "Naturalness / artifacts",
+    "Intelligibility of 'Raw-One'"
+  ]
+}

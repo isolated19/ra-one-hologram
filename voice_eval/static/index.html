@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RA-ONE — Voice Cloning Evaluation</title>
+  <style>
+    :root {
+      --bg: #0a0606;
+      --panel: #140a0a;
+      --ink: #f2e8e6;
+      --muted: #9a7a76;
+      --accent: #c62828;
+      --line: rgba(198, 40, 40, 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background:
+        radial-gradient(ellipse at 20% 0%, #2a0c0c 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, #1a0808 0%, transparent 45%),
+        var(--bg);
+      color: var(--ink);
+    }
+    main {
+      max-width: 920px; margin: 0 auto; padding: 2rem 1.25rem 4rem;
+    }
+    h1 {
+      font-weight: 700; letter-spacing: 0.18em; font-size: 1.35rem;
+      margin: 0 0 0.35rem; color: #ff6b5a;
+    }
+    .sub { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .grid {
+      display: grid; gap: 1rem;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+    label { display: block; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
+    input, select, textarea, button {
+      width: 100%; font: inherit; color: var(--ink);
+      background: var(--panel); border: 1px solid var(--line); border-radius: 4px;
+      padding: 0.65rem 0.75rem;
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    button {
+      cursor: pointer; background: linear-gradient(180deg, #8b1e1e, #5c1010);
+      border-color: #a82828; letter-spacing: 0.1em; text-transform: uppercase;
+      font-size: 0.85rem; font-weight: 600;
+    }
+    button:disabled { opacity: 0.5; cursor: wait; }
+    .panel {
+      border: 1px solid var(--line); background: rgba(20, 10, 10, 0.85);
+      padding: 1rem; border-radius: 6px; margin-bottom: 1rem;
+    }
+    .row { margin-bottom: 0.85rem; }
+    .meta { font-size: 0.85rem; color: var(--muted); white-space: pre-wrap; }
+    .ok { color: #8fdf9a; }
+    .bad { color: #ff8a80; }
+    audio { width: 100%; margin-top: 0.75rem; }
+    .badge {
+      display: inline-block; padding: 0.15rem 0.5rem; border: 1px solid var(--line);
+      border-radius: 999px; font-size: 0.7rem; letter-spacing: 0.06em; margin-right: 0.35rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>RA-ONE</h1>
+    <p class="sub">Offline voice-cloning evaluation lab · UI shows <strong>RA-ONE</strong> · TTS speaks <strong>Raw-One</strong> · Does not replace Piper</p>
+
+    <div class="panel">
+      <div class="row">
+        <label>Reference WAV (owned / permitted only)</label>
+        <input type="file" id="refFile" accept="audio/wav,audio/flac,audio/ogg,.wav,.flac,.ogg" />
+        <p class="meta" id="refStatus">Checking reference…</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="grid">
+        <div class="row">
+          <label>Engine</label>
+          <select id="engine">
+            <option value="pocket">Pocket TTS (priority)</option>
+            <option value="coqui">Coqui YourTTS (coqui-tts)</option>
+            <option value="kokoro">Kokoro ONNX (installed voices)</option>
+          </select>
+        </div>
+        <div class="row">
+          <label>Rugged preset</label>
+          <select id="preset">
+            <option value="none">None</option>
+            <option value="dark">Dark</option>
+            <option value="cosmic">Cosmic</option>
+            <option value="commander" selected>Commander</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <label>Kokoro voice (baseline only)</label>
+        <input id="voice" placeholder="am_adam / am_michael / bm_george" value="am_adam" />
+      </div>
+      <div class="row">
+        <label>Input text</label>
+        <textarea id="text"></textarea>
+      </div>
+      <button id="go">Generate</button>
+    </div>
+
+    <div class="panel">
+      <span class="badge" id="displayBadge">DISPLAY: RA-ONE</span>
+      <span class="badge" id="speakBadge">SPEAKS: Raw-One</span>
+      <p class="meta" id="timing">Generation time: —</p>
+      <p class="meta" id="resultMeta"></p>
+      <audio id="player" controls></audio>
+      <p style="margin-top:0.75rem"><a id="dl" href="#" hidden download>Download WAV</a></p>
+    </div>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    async function refreshMeta() {
+      const m = await fetch('/api/meta').then(r => r.json());
+      $('text').value = m.test_sentence;
+      const r = m.reference;
+      $('refStatus').className = 'meta ' + (r.ok ? 'ok' : 'bad');
+      $('refStatus').textContent = r.exists
+        ? `${r.ok ? 'OK' : 'Issues'} · ${r.duration_sec.toFixed(2)}s · ${r.sample_rate} Hz · ${r.channels} ch · peak ${r.peak.toFixed(3)}`
+          + (r.errors?.length ? '\n' + r.errors.join('\n') : '')
+          + (r.warnings?.length ? '\n' + r.warnings.join('\n') : '')
+        : 'Missing reference/my_voice.wav — upload a recording you own before cloning tests.';
+      const eng = m.engines.map(e => `${e.id}:${e.venv_ready ? 'ready' : 'venv missing'}`).join(' · ');
+      $('resultMeta').textContent = 'Engines: ' + eng;
+    }
+    $('refFile').addEventListener('change', async () => {
+      const f = $('refFile').files[0];
+      if (!f) return;
+      const fd = new FormData();
+      fd.append('file', f);
+      const r = await fetch('/api/reference/upload', { method: 'POST', body: fd }).then(x => x.json());
+      $('refStatus').className = 'meta ' + (r.ok ? 'ok' : 'bad');
+      $('refStatus').textContent = JSON.stringify(r, null, 2);
+    });
+    $('go').addEventListener('click', async () => {
+      $('go').disabled = true;
+      $('timing').textContent = 'Generating… (first run downloads models; may take several minutes on CPU)';
+      $('resultMeta').textContent = '';
+      const fd = new FormData();
+      fd.append('engine', $('engine').value);
+      fd.append('text', $('text').value);
+      fd.append('preset', $('preset').value);
+      fd.append('voice', $('voice').value);
+      try {
+        const r = await fetch('/api/generate', { method: 'POST', body: fd }).then(x => x.json());
+        if (!r.success) {
+          $('timing').textContent = 'Failed';
+          $('resultMeta').className = 'meta bad';
+          $('resultMeta').textContent = r.error || JSON.stringify(r, null, 2);
+          $('dl').hidden = true;
+          return;
+        }
+        const secs = (r.synthesize_sec ?? 0).toFixed(2);
+        const load = (r.load_sec ?? 0).toFixed(2);
+        $('timing').textContent = `Load ${load}s · Synth ${secs}s · Wall ${(r.wall_sec||0).toFixed(1)}s · Peak RSS ${(r.peak_rss_mb||0).toFixed(0)} MB · Clone=${r.cloning_used}`;
+        $('resultMeta').className = 'meta ok';
+        $('resultMeta').textContent = `Engine ${r.engine} · preset ${r.preset} · spoken: ${r.spoken_text}`;
+        if (r.download_url) {
+          $('player').src = r.download_url + '?t=' + Date.now();
+          $('dl').href = r.download_url;
+          $('dl').hidden = false;
+        }
+      } catch (e) {
+        $('timing').textContent = 'Error';
+        $('resultMeta').className = 'meta bad';
+        $('resultMeta').textContent = String(e);
+      } finally {
+        $('go').disabled = false;
+      }
+    });
+    refreshMeta();
+  </script>
+</body>
+</html>

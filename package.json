@@ -1,0 +1,82 @@
+{
+  "name": "ra-one-cosmic-hologram",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "desktop": "vite build && node desktop/launch.cjs",
+    "desktop:dev": "node desktop/launch.cjs --vite",
+    "desktop:dist": "powershell -ExecutionPolicy Bypass -File scripts/build-desktop.ps1"
+  },
+  "dependencies": {
+    "@vladmandic/face-api": "^1.7.15",
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "electron": "^45.0.0",
+    "electron-builder": "^26.15.3",
+    "jsdom": "^25.0.1",
+    "vite": "^5.4.0",
+    "vitest": "^2.1.0"
+  },
+  "main": "desktop/main.cjs",
+  "build": {
+    "appId": "com.raone.assistant",
+    "productName": "RA-ONE",
+    "copyright": "Copyright © RA-ONE",
+    "directories": {
+      "output": "release",
+      "buildResources": "desktop"
+    },
+    "files": [
+      "desktop/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/dist/raone-backend",
+        "to": "raone-backend"
+      },
+      {
+        "from": "backend/desktop.env",
+        "to": "raone-backend/.env"
+      },
+      {
+        "from": "backend/models",
+        "to": "models",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "dist",
+        "to": "web"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "desktop/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "RA-ONE"
+    },
+    "asar": true
+  }
+}

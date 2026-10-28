@@ -1,0 +1,6 @@
+kokoro-onnx>=0.4.0
+numpy>=1.26.0
+soundfile>=0.12.1
+psutil>=5.9.0
+pyyaml>=6.0.1
+onnxruntime>=1.16.0

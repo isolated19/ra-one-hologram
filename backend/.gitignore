@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.env
+*.db
+.coverage
+htmlcov/
+models/piper/*.onnx
+models/piper/*.onnx.json
+models/piper/*.wav
+!models/piper/.gitkeep
+models/vosk/
+models/whisper/
+
+# PyInstaller (scripts/build_backend.ps1)
+build/
+dist/

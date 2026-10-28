@@ -1,0 +1,19 @@
+# Isolated voice-cloning evaluation — does NOT replace Piper in the main app.
+display_name: "RA-ONE"
+spoken_name: "Raw-One"
+test_sentence: "I am Raw-One. An intelligence born from the universe. My systems are online. How may I assist you?"
+reference_wav: "reference/my_voice.wav"
+output_dir: "results"
+cache_dir: "cache"
+server_host: "127.0.0.1"
+server_port: 8765
+# Prefer deep male Kokoro voices for cinematic baseline (installed voices only)
+kokoro_voices:
+  - am_adam
+  - am_michael
+  - bm_george
+  - am_fenrir
+pocket_language: "english_7m_2026-10"
+pocket_builtin_voice: "alba"
+coqui_model: "tts_models/multilingual/multi-dataset/your_tts"
+default_preset: "commander"

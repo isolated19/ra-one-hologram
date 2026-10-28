@@ -1,0 +1,9 @@
+venvs/
+cache/
+results/*.wav
+__pycache__/
+*.pyc
+.pytest_cache/
+reference/my_voice.wav
+reference/my_voice.*
+!reference/README.txt
